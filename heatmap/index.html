@@ -30,22 +30,22 @@
     //default token
     mapboxgl.accessToken = 'pk.eyJ1IjoibW9sbHltZXJwIiwiYSI6ImNpazdqbGtiZTAxbGNocm0ybXJ3MnNzOHAifQ.5_kJrEENbBWtqTZEv7g1-w';
 
-    const map = new mapboxgl.Map({
+    const thismap = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/dark-v9',
         hash: true
     });
 
-    map.on('click', ()=>{
-      map.flyTo({
+    thismap.on('click', ()=>{
+      thismap.flyTo({
         center: [-73.5958,45.4912],
         zoom: 11,
         duration: 10000
       })
     })
 
-    map.on('load', () => {
-        map.addLayer({
+    thismap.on('load', () => {
+        thismap.addLayer({
             id: 'starbucks',
             type: 'heatmap',
             source: {
