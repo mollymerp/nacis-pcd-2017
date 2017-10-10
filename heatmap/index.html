@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <meta charset=utf-8 />
+    <title>Heatmap | Mapbox</title>
+    <link href='https://api.mapbox.com/mapbox-assembly/v0.10.1/assembly.min.css' rel='stylesheet' />
+    <script async defer src="https://api.mapbox.com/mapbox-assembly/v0.10.1/assembly.js"></script>
+    <script src='mapbox-gl-js/mapbox-gl.js'></script>
+    <link href='mapbox-gl-js/mapbox-gl.css' rel='stylesheet' />
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+    //default token
+    mapboxgl.accessToken = 'pk.eyJ1IjoibW9sbHltZXJwIiwiYSI6ImNpazdqbGtiZTAxbGNocm0ybXJ3MnNzOHAifQ.5_kJrEENbBWtqTZEv7g1-w';
+
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/dark-v9',
+        hash: true
+    });
+
+    map.on('click', ()=>{
+      map.flyTo({
+        center: [-73.5958,45.4912],
+        zoom: 11,
+        duration: 10000
+      })
+    })
+
+    map.on('load', () => {
+        map.addLayer({
+            id: 'starbucks',
+            type: 'heatmap',
+            source: {
+                type: 'geojson',
+                data: 'starbucks.geojson'
+            },
+            paint: {
+                'heatmap-color': {
+                    stops: [
+                        [0, 'rgba(27, 30, 137, 0)'],
+                        [0.2, "rgba(113, 42, 165, 0.5)"],
+                        [0.4, "rgba(186, 58, 134, 0.75)"],
+                        [0.6, "rgba(231, 114, 92, 0.75)"],
+                        [0.8, "rgba(249, 162, 69, 0.75)"],
+                        [1, "rgba(244, 233, 65, 0.95)"]
+                    ]
+                },
+                'heatmap-radius': {
+                  stops: [
+                    [0, 5],
+                    [10, 20]
+                  ]
+                },
+                'heatmap-weight': {
+                  stops: [
+                    [0, 0.15],
+                    [13, 1]
+                  ]
+                }
+
+            }
+        }, 'airport-label');
+    });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
+  <title>big</title>
+  <link href='big.css' rel='stylesheet' type='text/css' />
+  <link href='highlight.css' rel='stylesheet' type='text/css' />
+  <style>
+    .new-shiny { background: #aaaaaa; }
+  </style>
+  <script src='big.js'></script>
+  <script src='highlight.js'></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body class='light'>
+  <div><h1 id="gl-mapping-tips-and-tricks">GL mapping tips and tricks</h1>
+<h2 style="text-align: center"> &#128506;&#127912;&#10024;</h2>
+
+</div>
+<div><h1 id="molly-lloyd">Molly Lloyd</h1>
+<ul>
+<li>&#128035; <a href="twitter.com/mollymerp">@mollymerp</a> </li>
+<li>&#128126; github.com/mollymerp</li>
+<li>&#128105;&#8205;&#128187; <a href="mapbox.com/maps">Mapbox GL</a></li>
+</ul>
+</div>
+<div><h1 id="whats-new-">Whats new?</h1>
+<ul>
+<li>heatmaps </li>
+<li>client-side hillshading</li>
+<li>expressions</li>
+<li>bonus: map projection hacking</li>
+</ul>
+</div>
+<div><h1 id="heatmaps">heatmaps</h1>
+<h2 style="text-align: center;">&#128293; &#127878; &#128293;</h2>
+
+</div>
+<div><video src="heatmap.mov" controls width="100%"></video> 
+
+</div>
+<div><h1 id="heatmaps">heatmaps</h1>
+<ul>
+<li>large point datasets </li>
+<li><a href="https://en.wikipedia.org/wiki/Multivariate_kernel_density_estimation">bivariate kernel density estimation</a></li>
+<li>&#9889;&#65039; speedy GPU calculation</li>
+<li>data-driven intensity <pre>heatmap-weight</pre></li>
+</ul>
+</div>
+<div><pre>
+<code>
+  map.addLayer({
+      id: 'starbucks',
+      type: 'heatmap',
+      source: {
+          type: 'geojson',
+          data: 'starbucks.geojson'
+      },
+      paint: {
+          'heatmap-color': {
+              stops: [
+
+                  [0, 'rgba(27, 30, 137, 0)'],
+                  [0.5, "rgba(186, 58, 134, .5)"],
+                  [1, "rgb(244, 233, 65)"]
+              ]
+          },
+          'heatmap-radius': {
+            stops: [
+              [0, 5],
+              [10, 20]
+            ]
+          },
+          'heatmap-intensity': {
+            stops: [
+              [0, 0.15],
+              [13, 1]
+            ]
+          }
+      }
+  }, 'airport-label');  
+
+</code>
+</pre>
+
+</div>
+<div><h1 id="raster-dem-hillshade">raster DEM hillshade</h1>
+<h2 style="text-align: center;">&#9968;&#65039;</h2>
+
+</div>
+<div style="padding: 0;" data-background-image="img/terrain-rgb.png" data-bodyclass="white"><p>Mapbox&#39;s raster DEM terrain-rgb </p>
+</div>
+<div><p>&#10024;&#128073;&#127956;&#65039;</p>
+</div>
+<div style="padding: 0;" data-background-image="img/raster-hillshade.png"><p>client-side hillshade in mapbox-gl-js</p>
+</div>
+<div><h1 id="expressions">expressions</h1>
+<h2 style="text-align: center;"> &#128290;&#128105;&#8205;&#128300;&#128200; </h2>
+
+</div>
+<div><h1 id="expressions-what-">expressions: what?</h1>
+</div>
+<div><h1> &#128477;&#65039; </h1>
+
+<ul>
+<li>multiple feature properties</li>
+<li>arithmetic &#10133;&#10134;&#10135;&#10006;&#65039;</li>
+<li>string manipulation </li>
+<li>conditional logic</li>
+<li>backwards compatible &#128517;</li>
+</ul>
+</div>
+<div><h1 id="expressions-why-">expressions: why?</h1>
+</div>
+<div><ul>
+<li>&#10024; data-driven styling 2.0 &#10024;</li>
+<li>full data access and styling control</li>
+<li>ergonomic for styling and labeling</li>
+</ul>
+</div>
+<div><h1 id="expressions-how-">expressions: how?</h1>
+</div>
+<div><h1 id="conditional-logic-multiple-properties">conditional logic + multiple properties</h1>
+<pre>
+  <code>
+    "text-field": [
+      //conditional expression type
+      "case",
+      //if
+      ["has", "name_zh"],
+      //then
+      ["concat", ["get", "name_zh"], "\n", ["get", "name"]],
+      //get name
+      ["get", "name"]
+    ];
+  </code>
+</pre>
+
+</div>
+<div><h1 id="arithmetic">arithmetic</h1>
+<pre>
+  <code>
+    "circle-radius": [
+      // exponent expression type
+      "^",
+      // divide population by 10,000
+      ["/", ["get", "population"], 10000],
+      // take the square root
+      0.5
+    ]
+  </code>
+</pre>
+
+</div>
+<div><p>expressions: when?</p>
+</div>
+<div><ul>
+<li>&#128421;&#65039; JS: this month</li>
+<li>&#128241; iOS + Android: mid-Dec.</li>
+<li>&#127912; Mapbox Studio: early 2018</li>
+</ul>
+</div>
+<div><h1 id="bonus">BONUS</h1>
+<h2 style="text-align: center;"> &#127881;&#127881;&#127881;</h2>
+
+</div>
+<div style="padding: 0;" data-background-image="img/dirty-reproj.png" data-bodyclass="white"><p>hacking vector data projections</p>
+</div>
+<div><p><a href="http://devseed.com/dirty-reprojectors-app/">dirty reprojectors</a> by Development Seed</p>
+</div>
+<div><h2 style="text-align: center;">&#128587;&#129299;&#128506;&#65039;</h2>
+
+<p>contribute: </p>
+<ul>
+<li><a href="github.com/mapbox/mapbox-gl-js/">github.com/mapbox/mapbox-gl-js/</a></li>
+<li><a href="github.com/mapbox/mapbox-gl-native/">github.com/mapbox/mapbox-gl-native/</a></li>
+</ul>
+<p>slides: github.com/mollymerp/nacis-pcd-2017/
+questions? <a href="twitter.com/mollymerp">@mollymerp</a></p>
+</div>
+</body>
+</html>
